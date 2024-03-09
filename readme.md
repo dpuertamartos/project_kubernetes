@@ -18,3 +18,5 @@
 1. `kubectl create deployment kubernetes-server --image=dpuertamartos/project_kubernetes_server`
 2. `kubectl get pods`
 3. `kubectl logs -f {desired pod}` for example `kubectl logs -f kubernetes-server-586bf57874-bsr2r` Sever started on port 3000 should appear
+4. Clean resources `kubectl delete deployment kubernetes-server`
+
