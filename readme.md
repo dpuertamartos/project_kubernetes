@@ -31,4 +31,11 @@ After `deployment.yaml` is created (exe)
 1. `kubectl port-forward kubernetes-server-{desired_tag_pod} 3001:3000` for example `kubectl port-forward kubernetes-server-5f6f697b86-4j5g7 3001:3000`
 2. Check in browser accesing `localhost:3001` that you get Hello World!
 
+### NodePort services.yaml
+
+1. `k3d cluster delete`
+2. `k3d cluster create --port 8082:30080@agent:0 -p 8081:80@loadbalancer --agents 2`
+3. In `services.yaml` NodePort (port available outside) is set to 30080, targetport is set to 3000
+4. Check in browser accesing `localhost:8082` that you get Hello World!
+
 
