@@ -17,6 +17,12 @@
 ### Kubernetes deployment and log checking
 1. `kubectl create deployment kubernetes-server --image=dpuertamartos/project_kubernetes_server`
 2. `kubectl get pods`
-3. `kubectl logs -f {desired pod}` for example `kubectl logs -f kubernetes-server-586bf57874-bsr2r` Sever started on port 3000 should appear
-4. Clean resources `kubectl delete deployment kubernetes-server`
+3. Use `source <(kubectl completion bash)` for automatic completion. It cvan be added to .bashrc
+4. `kubectl logs -f {desired pod}` for example `kubectl logs -f kubernetes-server-586bf57874-bsr2r` Sever started on port 3000 should appear
+5. Clean resources `kubectl delete deployment kubernetes-server`
+
+After `deployment.yaml` is created
+
+1. Replace previous step 1 with `kubectl apply -f deployment.yaml`
+2. Replace previous step 5 with `kubectl delete -f deployment.yaml`
 
