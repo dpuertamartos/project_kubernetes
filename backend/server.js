@@ -1,7 +1,9 @@
+//server.js
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 const imagesDirectory = './files'; // Ensure this directory exists
@@ -9,8 +11,8 @@ const imageUrl = 'https://picsum.photos/'; // URL for fetching random images
 const imageNumberPath = path.join(imagesDirectory, 'image_number.txt');
 const timestampPath = path.join(imagesDirectory, 'timestamp.txt');
 
-// Middleware to serve images statically
-app.use('/images', express.static(imagesDirectory));
+app.use(cors())
+app.use(express.json())
 
 // Function to check if an image update is needed
 const updateImageIfNeeded = async () => {
@@ -42,7 +44,7 @@ app.get('/', (req, res) => {
 });
 
 // Endpoint to trigger image update check
-app.get('/update-image', async (req, res) => {
+app.get('/api/update-image', async (req, res) => {
   await updateImageIfNeeded();
   const url = await getUpdatedUrl();
   res.json({'url': url}); 
