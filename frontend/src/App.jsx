@@ -1,11 +1,12 @@
 //App.jsx
 import { useEffect, useState } from 'react';
 import imageService from './services/images.js'
+import todoServices from './services/todos.js'
 
 function App() {
   const [imageUrl, setImageUrl] = useState('');
   const [todo, setTodo] = useState('');
-  const [todos, setTodos] = useState(['Learn React', 'Build a todo app', 'Explore Kubernetes']); // Hardcoded todos
+  const [todos, setTodos] = useState([]); // Hardcoded todos
 
   useEffect(() => {
     const fetchImageUrl = async () => {
@@ -19,9 +20,24 @@ function App() {
       } catch (error) {
         console.error('Error fetching image URL:', error);
       }
-    };
+    }
+
+    const fetchTodos = async () => {
+      try {
+        console.log('trying to fetch todos');
+        const data = await todoServices.get();
+        console.log(data);
+        if (data) {
+          setTodos(data);
+        }
+      } catch (error) {
+        console.error('Error fetching todos:', error);
+      }
+
+    }
 
     fetchImageUrl();
+    fetchTodos();
   }, []);
 
   const handleTodoChange = (e) => {
@@ -35,8 +51,14 @@ function App() {
   const handleSendTodo = () => {
     // Add the new todo to the list (without sending to a backend for now)
     if (todo) {
-      setTodos(prevTodos => [...prevTodos, todo]);
-      setTodo(''); // Clear input field after adding
+      try {
+        todoServices.create({'content':todo})
+        setTodos(prevTodos => [...prevTodos, todo])
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setTodo(''); // Clear input field after adding
+      }
     }
   };
 
