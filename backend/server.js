@@ -1,7 +1,6 @@
 //server.js
 const fs = require('fs');
 const path = require('path');
-const axios = require('axios');
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -10,6 +9,7 @@ const imagesDirectory = './files'; // Ensure this directory exists
 const imageUrl = 'https://picsum.photos/'; // URL for fetching random images
 const imageNumberPath = path.join(imagesDirectory, 'image_number.txt');
 const timestampPath = path.join(imagesDirectory, 'timestamp.txt');
+const todosRouter = require('./controllers/todos')
 
 app.use(cors())
 app.use(express.json())
@@ -49,6 +49,8 @@ app.get('/api/update-image', async (req, res) => {
   const url = await getUpdatedUrl();
   res.json({'url': url}); 
 });
+
+app.use('/api/todos', todosRouter)
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
