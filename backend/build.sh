@@ -1,4 +1,4 @@
-app_name=project_kubernetes_frontend
+app_name=project_kubernetes_server
 username=dpuertamartos
 cd "$(dirname "$0")"
 docker build -t $app_name .
