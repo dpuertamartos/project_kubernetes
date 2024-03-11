@@ -1,0 +1,37 @@
+#deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubernetes-app-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubernetes-app
+  template:
+    metadata:
+      labels:
+        app: kubernetes-app
+    spec:
+      volumes:
+        - name: shared-image
+          persistentVolumeClaim:
+            claimName: image-claim
+      initContainers:
+        - name: volume-mount-hack
+          image: alpine
+          command: ["sh", "-c", "chown -R 1000:1000 /usr/src/app/files"] # Ref: <https://serverfault.com/a/907160>
+          volumeMounts:
+            - name: shared-image
+              mountPath: /usr/src/app/files
+      containers:
+        - name: kubernetes-server
+          image: dpuertamartos/project_kubernetes_server
+          volumeMounts:
+            - name: shared-image
+              mountPath: /usr/src/app/files
+        - name: kubernetes-frontend
+          image: dpuertamartos/project_kubernetes_frontend
+          volumeMounts:
+            - name: shared-image
+              mountPath: /usr/src/app/files

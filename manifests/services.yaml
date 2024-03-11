@@ -1,0 +1,19 @@
+#services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubernetes-app-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: kubernetes-app
+  ports:
+    - name: backend
+      port: 2345
+      protocol: TCP
+      targetPort: 3000
+    - name: frontend
+      protocol: TCP
+      port: 1234
+      targetPort: 3001
+
