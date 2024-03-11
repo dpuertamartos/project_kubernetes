@@ -1,3 +1,5 @@
+kubectl create namespace project
+
 chmod +x ./backend/build.sh
 chmod +x ./frontend/build.sh
 
