@@ -5,8 +5,8 @@ const express = require('express');
 const app = express();
 
 const imagesDirectory = './files'; // Ensure this directory exists
-const imageUrl = 'https://picsum.photos/1200'; // URL for fetching random images
-const imagePath = path.join(imagesDirectory, 'daily_image.jpg');
+const imageUrl = 'https://picsum.photos/'; // URL for fetching random images
+const imageNumberPath = path.join(imagesDirectory, 'image_number.txt');
 const timestampPath = path.join(imagesDirectory, 'timestamp.txt');
 
 // Middleware to serve images statically
@@ -28,17 +28,15 @@ const updateImageIfNeeded = async () => {
   // Check if more than 24 hours have passed
   if (now - lastFetchDate >= 24 * 60 * 60 * 1000) {
     console.log('Fetching a new daily image...');
-    const response = await axios({
-      url: imageUrl,
-      responseType: 'stream',
-    });
-    response.data.pipe(fs.createWriteStream(imagePath));
+    const rand_number = String(Math.floor(Math.random() * 5000))
+    fs.writeFileSync(imageNumberPath, rand_number);
     fs.writeFileSync(timestampPath, now.toISOString());
-
     console.log('New image fetched and saved.');
   }
 };
 
+const getUpdatedUrl = () => imageUrl + fs.readFileSync(imageNumberPath, 'utf8')
+  
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
@@ -46,7 +44,8 @@ app.get('/', (req, res) => {
 // Endpoint to trigger image update check
 app.get('/update-image', async (req, res) => {
   await updateImageIfNeeded();
-  res.redirect('/images/daily_image.jpg'); // Redirect to the updated image
+  const url = await getUpdatedUrl();
+  res.json({'url': url}); 
 });
 
 const PORT = process.env.PORT || 3000;
