@@ -28,6 +28,12 @@ spec:
       containers:
         - name: kubernetes-server
           image: dpuertamartos/project_kubernetes_server
+          env:
+            - name: PORT # ENV name passed to container
+              valueFrom:
+                secretKeyRef:
+                  name: kubernetes-server-secret
+                  key: PORT # ENV name in the secret
           volumeMounts:
             - name: shared-image
               mountPath: /usr/src/app/files
