@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  namespace: project
+  name: cronjob
+spec:
+  schedule: "* * * * *" # Run every minute
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: cronjob
+            image: dpuertamartos/project_cronjob
+            env:
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-pw
+                    key: POSTGRES_PASSWORD 
+          restartPolicy: OnFailure
