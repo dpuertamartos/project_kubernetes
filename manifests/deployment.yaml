@@ -34,6 +34,11 @@ spec:
                 secretKeyRef:
                   name: kubernetes-server-secret
                   key: PORT # ENV name in the secret
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-pw
+                  key: POSTGRES_PASSWORD 
           volumeMounts:
             - name: shared-image
               mountPath: /usr/src/app/files
