@@ -48,12 +48,12 @@ function App() {
     }
   };
 
-  const handleSendTodo = () => {
+  const handleSendTodo = async () => {
     // Add the new todo to the list (without sending to a backend for now)
     if (todo) {
       try {
-        todoServices.create({'content':todo})
-        setTodos(prevTodos => [...prevTodos, todo])
+        const newTodo = await todoServices.create({'content':todo})
+        setTodos(prevTodos => [...prevTodos, newTodo])
       } catch (error) {
         console.log(error)
       } finally {
@@ -82,7 +82,7 @@ function App() {
       <div>
         <ul>
           {todos.map((todo, index) => (
-            <li key={index}>{todo}</li>
+            <li key={index}>{todo.content}</li>
           ))}
         </ul>
       </div>
