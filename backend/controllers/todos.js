@@ -1,6 +1,9 @@
 const router = require('express').Router()
 const { sequelize } = require('../util/db')
 const { QueryTypes } = require('sequelize')
+const morgan = require('morgan')
+
+router.use(morgan('dev'))
 
 // Get all todos
 router.get('/', async (req, res) => {
@@ -20,6 +23,10 @@ router.post('/', async (req, res) => {
         if (!content) {
             return res.status(400).json({ error: 'Content is required' })
         }
+        if (content.length > 140) {
+            return res.status(400).json({ error: 'Content exceeds the 140 character limit' });
+        }
+        
         const insertedTodo = await sequelize.query("INSERT INTO todo (content) VALUES (:content) RETURNING *", {
             replacements: { content },
             type: QueryTypes.INSERT
