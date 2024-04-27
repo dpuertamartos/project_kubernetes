@@ -8,3 +8,6 @@ chmod +x ./timestamp_gen/build.sh
 ./hash_gen/build.sh
 ./pong_app/build.sh
 
+kubectl delete -f ./manifests_onpremise
+kubectl apply -f ./manifests_onpremise
+
