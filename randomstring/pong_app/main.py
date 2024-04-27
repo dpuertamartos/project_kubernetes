@@ -32,6 +32,11 @@ def init_db():
     conn.close()
 
 
+@app.route('/')
+def health_check():
+    return jsonify({'success': 'healthy'})  # Simple endpoint to satisfy Ingress health checks
+
+
 @app.route('/pingpong')
 def pingpong():
     conn = get_db_connection()
