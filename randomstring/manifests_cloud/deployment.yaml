@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: string-ns
+  name: flask-app-counter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-app-counter
+  template:
+    metadata:
+      labels:
+        app: flask-app-counter
+    spec:
+      containers:
+        - name: flask-app-counter
+          image: dpuertamartos/flask-app-counter

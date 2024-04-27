@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: string-ns
+  name: flask-app-string-generator-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-app-string-generator
+  template:
+    metadata:
+      labels:
+        app: flask-app-string-generator
+    spec:
+      volumes:
+        - name: shared-txt
+          persistentVolumeClaim:
+            claimName: flask-app-string-generator-claim
+      containers:
+        - name: flask-app-string-generator
+          image: dpuertamartos/flask-app-string-generator
+          volumeMounts:
+            - name: shared-txt
+              mountPath: /usr/src/app/files
+          env:
+            - name: MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: example-configmap
+                  key: MESSAGE
+        - name: flask-app-timestamp-generator
+          image: dpuertamartos/flask-app-timestamp-generator
+          volumeMounts:
+            - name: shared-txt
+              mountPath: /usr/src/app/files
